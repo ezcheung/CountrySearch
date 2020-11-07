@@ -14,6 +14,7 @@ app.get('/bundle.js',
 );
 
 var port = process.env.PORT || 4000;
+
 /*
 * Starts the server
 */
@@ -22,6 +23,12 @@ let startListening = function() {
 	console.log("Listening on port:" + port);
 
 	process.on('SIGINT', function(){
+		console.log("Shutting down");
+	  	listener.close(); //make sure to close port
+		process.exit(0);
+	});
+
+	process.on('SIGTERM', function(){
 		console.log("Shutting down");
 	  	listener.close(); //make sure to close port
 		process.exit(0);
