@@ -1,8 +1,9 @@
 let path = require('path');
-var browserify = require('browserify-middleware');
-var express = require('express');
+let browserify = require('browserify-middleware');
+let express = require('express');
+let fetch = require('node-fetch');
 
-var app = express();
+let app = express();
 
 
 app.use(express.static(path.join(__dirname, "../client/public")));
@@ -13,9 +14,33 @@ app.get('/bundle.js',
   })
 );
 
-var port = process.env.PORT || 4000;
+/**
+* Endpoints
+*/
 
-/*
+let getRestEndpoint = function(input,searchOpt){
+	if(!input) return null;
+
+	if(searchOpt === "name") return `https://restcountries.eu/rest/v2/name/${input}`;
+	else if(searchOpt === "fullname") return `https://restcountries.eu/rest/v2/name/${input}?fullText=true`;
+	else if(searchOpt === "code") return `https://restcountries.eu/rest/v2/alpha/${input}`;
+	else return null;
+}
+
+app.get('/countries/:searchOpt',
+	(req,res) => {
+		let endpoint = getRestEndpoint(req.query.q,req.params.searchOpt);
+		if(endpoint == null) res.status(400).send("Invalid search parameters")
+		else {
+			fetch(endpoint)
+			.then((data) => data.json())
+			.then(data => console.log(data))
+		}
+	})
+
+let port = process.env.PORT || 4000;
+
+/**
 * Starts the server
 */
 let startListening = function() {
