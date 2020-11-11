@@ -1,6 +1,7 @@
 import React from 'react';
 import InputForm from './inputForm.js';
 import Countries from './countries.js';
+import Loading from './loading.js';
 import { getCountries } from '../models/countryLookup.js'
 
 /**
@@ -39,8 +40,19 @@ export default class App extends React.Component {
 	}
 
 	renderCountries() {
-		if(this.state.loading || this.state.error || this.state.countries.length <= 0) return null;
-		else return <Countries countries={this.state.countries} regions={this.state.regions}/>
+		if(this.state.loading) return <Loading/>
+
+		if(this.state.error) {
+			let errMsg = this.state.error == 404 ? 
+			"No countries were found. Try searching for something else!" : 
+			"An error occurred when searching for countries: " + this.state.error;
+
+			return <div className="error">{errMsg}</div>
+		}
+
+		if(this.state.countries.length <= 0) return null;
+		
+		return <Countries countries={this.state.countries} regions={this.state.regions}/>
 	}
 
 	render() {
