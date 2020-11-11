@@ -1,7 +1,6 @@
 import React from 'react';
 import InputForm from './inputForm.js';
 import Countries from './countries.js';
-import Loading from './loading.js';
 import { getCountries } from '../models/countryLookup.js'
 
 /**
@@ -40,7 +39,7 @@ export default class App extends React.Component {
 	}
 
 	renderCountries() {
-		if(this.state.loading) return <Loading/>
+		if(this.state.loading) return <div id="loading">Loading</div>
 
 		if(this.state.error) {
 			let errMsg = this.state.error == 404 ? 
