@@ -1,5 +1,6 @@
 import React from 'react';
 import InputForm from './inputForm.js';
+import Countries from './countries.js';
 import { getCountries } from '../models/countryLookup.js'
 
 /**
@@ -11,6 +12,7 @@ export default class App extends React.Component {
 		super(props);
 		this.state = {
 			countries: [],
+			regions: {},
 			loading: false,
 			error: ""
 		}
@@ -22,23 +24,30 @@ export default class App extends React.Component {
 			return window.alert("Please enter something to search by")
 		} 
 
-		this.setState({loading: true})
+		this.setState({loading: true, error: ""})
 		getCountries(input,searchByOpt)
 		.then((data) => {
-			if(data.ok === false) this.setState({countries: [], loading: false, error: data.status})
-			else this.setState({countries: data, loading: false})
+			console.log("Data: ", data);
+			if(data.ok === false) this.setState({countries: [], regions: {},loading: false, error: data.status})
+			else this.setState({countries: data.countries, regions: data.regions, loading: false})
 		}
 		)
 		.catch((error) => {
-			this.setState({countries: [], loading: false, error: error})
+			this.setState({countries: [], regions: {}, loading: false, error: error})
 			console.log("Error submitting form: ",error)
 			})
+	}
+
+	renderCountries() {
+		if(this.state.loading || this.state.error || this.state.countries.length <= 0) return null;
+		else return <Countries countries={this.state.countries} regions={this.state.regions}/>
 	}
 
 	render() {
 		return (
 			<div>
 				<InputForm handleSubmit={this.handleSubmit.bind(this)}/>
+				{this.renderCountries()}
 			</div>
 			)
 	}

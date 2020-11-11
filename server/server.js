@@ -21,7 +21,32 @@ let getRestEndpoint = function(input,searchOpt){
 }
 
 let buildCountriesResponse = function(data) {
-	
+	let resp = {countries: [], regions: {}};
+
+	for(let i = 0; i < data.length; i++) {
+		let country = data[i];
+		resp.countries.push({
+			name: country.name,
+			alpha2Code: country.alpha2Code,
+			alpha3Code: country.alpha3Code,
+			flag: country.flag,
+			region: country.region,
+			subregion: country.subregion,
+			population: country.population,
+			languages: country.languages.map(lang => lang.name)
+		})
+		if(country.region) {
+			if(resp.regions[country.region] == undefined) resp.regions[country.region] = {count: 0, subregions: {}};
+			let reg = resp.regions[country.region];
+			reg.count += 1;
+			if(country.subregion) {
+				if(reg.subregions[country.subregion] == undefined) reg.subregions[country.subregion] = 0;
+				reg.subregions[country.subregion] += 1;
+			}
+		}
+	}
+
+	return resp;
 }
 
 /**
@@ -41,9 +66,8 @@ app.get('/countries/:searchOpt',
 			fetch(endpoint)
 			.then(data => data.json())
 			.then(data => {
-				console.log("Data: ", data);
 				if((data.status == undefined)||(data.status < 300)) {
-					return res.status(200).send(data);
+					return res.status(200).send(buildCountriesResponse(data));
 				}
 				else return res.status(data.status).send(data);
 			})
