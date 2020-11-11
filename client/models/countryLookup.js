@@ -6,16 +6,13 @@ let endpoints= {
 
 export function getCountries(input,searchByOpt){
 	let endpoint=endpoints[searchByOpt];
-	
+
 	return fetch(`/countries/${endpoint}/?q=${input}`)
 	.then(response => {
-		return response.json();
-	})
-	.then(data => {
-		if(!data.ok) {
-			throw new Error(data.error)
+		if(!response.ok) {
+			return response;
 		}
-		return data.data
+		else return response.json();
 	})
 }
 
