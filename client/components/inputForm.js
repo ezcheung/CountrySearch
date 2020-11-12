@@ -40,17 +40,20 @@ export default class InputForm extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={() => this.props.handleSubmit(this.state.input,this.state.optSearchBy)}>
-				<label id="input">
-					<input type="text" value={this.state.input} onChange={this.handleInputChange.bind(this)}/>
-				</label>
-				<div id="searchByBtns">
-					{this.searchByBtn("Name")}
-					{this.searchByBtn("Full Name")}
-					{this.searchByBtn("Code")}
-				</div>
-				<input className="button" id="btnSub" type="submit" value="Search"/>
-			</form>
+			<div id="inputForm">
+				<h2 id="inputHeader">Search for Countries:</h2>
+				<form onSubmit={() => this.props.handleSubmit(this.state.input,this.state.optSearchBy)}>
+					<label>
+						<input id="input" type="text" value={this.state.input} onChange={this.handleInputChange.bind(this)}/>
+					</label>
+					<div id="searchByBtns">
+						{this.searchByBtn("Name")}
+						{this.searchByBtn("Full Name")}
+						{this.searchByBtn("Code")}
+					</div>
+					<input className="button" id="btnSub" type="submit" value={"Search by " + this.state.optSearchBy}/>
+				</form>
+			</div>
 			)
 	}
 }

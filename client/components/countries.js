@@ -13,9 +13,8 @@ export default class Countries extends React.Component {
 
 	renderSummary() {
 		return (
-			<div id="summary">
-				<h2>Summary</h2>
-				<div>{"Total number of countries: " + this.props.countries.length}</div>
+			<div id="summary" className="country">
+				<h2>{"Total: " + this.props.countries.length}</h2>
 				{this.renderRegions()}
 			</div>
 		)
@@ -27,7 +26,12 @@ export default class Countries extends React.Component {
 			regArr.push(
 				<div className="region">
 					<h3>{i + ": " + this.props.regions[i].count}</h3>
-					{this.renderSubregions(this.props.regions[i].subregions)}
+					<div className="regionInfo">
+						<div className="subregions">
+							{this.renderSubregions(this.props.regions[i].subregions)}
+						</div>
+						<img className="regionImg" src={'assets/' + i + ".png"} onerror='this.style.display = "none"'/>
+					</div>
 				</div>
 			)
 		}

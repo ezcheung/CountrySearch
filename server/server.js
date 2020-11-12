@@ -23,6 +23,8 @@ let getRestEndpoint = function(input,searchOpt){
 let buildCountriesResponse = function(data) {
 	let resp = {countries: [], regions: {}};
 
+	if(!Array.isArray(data)) data = [data] //Some options don't return an array -- make into an array of 1 for simplicity
+
 	for(let i = 0; i < data.length; i++) {
 		let country = data[i];
 		resp.countries.push({

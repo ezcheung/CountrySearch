@@ -14,7 +14,8 @@ export default class App extends React.Component {
 			countries: [],
 			regions: {},
 			loading: false,
-			error: ""
+			errorCode: "",
+			errorMessage: ""
 		}
 	}
 
@@ -28,23 +29,36 @@ export default class App extends React.Component {
 		getCountries(input,searchByOpt)
 		.then((data) => {
 			console.log("Data: ", data);
-			if(data.ok === false) this.setState({countries: [], regions: {},loading: false, error: data.status})
-			else this.setState({countries: data.countries, regions: data.regions, loading: false})
+			if(data.ok === false) this.setState({countries: [], regions: {},loading: false, errorCode: data.status, errorMessage: data.statusText})
+			else {
+				this.setState({countries: data.countries, regions: data.regions, loading: false, errorCode: data.countries.length ? "" : 404})
+			}
 		}
 		)
 		.catch((error) => {
-			this.setState({countries: [], regions: {}, loading: false, error: error})
+			this.setState({countries: [], regions: {}, loading: false, errorCode: error})
 			console.log("Error submitting form: ",error)
 			})
 	}
 
-	renderCountries() {
-		if(this.state.loading) return <div id="loading">Loading</div>
+	renderContent() {
+		if(this.state.loading) return (
+				<div id="loading">
+					<b>Loading...</b>
+					<br/>
+					<img src='assets/flag.png' id="loadingImg"/>
+				</div>
+			)
 
-		if(this.state.error) {
-			let errMsg = this.state.error == 404 ? 
-			"No countries were found. Try searching for something else!" : 
-			"An error occurred when searching for countries: " + this.state.error;
+		// Bad request - no countries found for the inputs
+		if(this.state.errorCode >= 400 && this.state.errorCode < 500) {
+			return <div className="error">No countries were found. Try searching for something else!</div>
+		}
+
+		// Non-400 errors -- something went wrong with the server or we were redirected
+		if(this.state.errorCode) {
+			let errMsg = "An error occurred when searching for countries" 
+			if(this.state.errorMessage) errMsg += " - " + this.state.errorCode + ": " + this.state.errorMessage;
 
 			return <div className="error">{errMsg}</div>
 		}
@@ -56,9 +70,9 @@ export default class App extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div id="app">
 				<InputForm handleSubmit={this.handleSubmit.bind(this)}/>
-				{this.renderCountries()}
+				{this.renderContent()}
 			</div>
 			)
 	}

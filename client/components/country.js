@@ -19,10 +19,12 @@ export default class Country extends React.Component {
 
 	renderHeader() {
 		return (
-			<h2 className="header">
-				{this.props.country.name}
+			<div className="cntHeader">
+				<h2 className="cntName">
+					{this.props.country.name}
+				</h2>
 				{this.renderFlag()}
-			</h2>
+			</div>
 		)
 	}
 
@@ -44,7 +46,7 @@ export default class Country extends React.Component {
 		}
 
 		for(let i in labels) {
-			if(this.props.country[i] != undefined) {
+			if(this.props.country[i]) {
 				content.push(
 					<div className="content">
 						<b className="label">{labels[i]}</b>
@@ -59,12 +61,17 @@ export default class Country extends React.Component {
 
 	renderSingleDataPiece(data){
 		if(data === "languages") {
-			return this.props.country.languages.map((lang, i) => 
-				<p className="info" key={"lang" + i}>{lang}</p>
+			return (
+				<div className="langs">
+					{
+						this.props.country.languages.map((lang, i) => 
+						<div className="info" key={"lang" + i}>{lang}</div>)
+					}
+				</div>
 			)
 		}
 		else {
-			return <p className="info">{this.props.country[data]}</p>
+			return <div className="info">{this.props.country[data]}</div>
 		}
 	}
 }
