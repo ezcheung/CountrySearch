@@ -119,10 +119,8 @@ body{
 	max-height: 175px;
 }
 
-.subregions{
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+.subregion{
+	margin-top: 5px;
 }
 
 .error {

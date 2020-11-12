@@ -42,7 +42,7 @@ export default class Countries extends React.Component {
 						<div className="subregions">
 							{this.renderSubregions(this.props.regions[i].subregions)}
 						</div>
-						<img className="regionImg" src={'assets/' + i + ".png"} onError={() => {this.style.display = "none"}}/>
+						<img className="regionImg" src={'assets/' + i + ".png"} onError={i => i.target.style.display='none'}/>
 					</div>
 				</div>
 			)
