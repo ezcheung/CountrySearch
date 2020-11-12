@@ -77,7 +77,10 @@ app.get('/countries/:searchOpt',
 		if(endpoint == null) res.status(400).send("Invalid search parameters")
 		else {
 			fetch(endpoint)
-			.then(data => data.json())
+			.then(data => {
+				if(data.ok) return data.json()
+				else return data
+			})
 			.then(data => {
 				if((data.status == undefined)||(data.status < 300)) {
 					return res.status(200).send(buildCountriesResponse(data));
