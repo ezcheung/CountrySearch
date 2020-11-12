@@ -11,6 +11,12 @@ app.use(express.static(path.join(__dirname, "../client/public")));
 /**
 * Country lookup endpoint helpers
 */
+
+/**
+* Gets the right restcountries endpoint to hit, based on the inputs
+* @param input Free-text input to search for
+* @param searchOpt What search option was selected ("name", "fullname", or "code")
+*/
 let getRestEndpoint = function(input,searchOpt){
 	if(!input) return null;
 
@@ -20,6 +26,10 @@ let getRestEndpoint = function(input,searchOpt){
 	else return null;
 }
 
+/**
+* Call after getting the data from the restcountries API. Builds the object to return to the client
+* @param data The data returned from the restcountries API
+*/
 let buildCountriesResponse = function(data) {
 	let resp = {countries: [], regions: {}};
 

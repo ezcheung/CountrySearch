@@ -19,16 +19,22 @@ export default class App extends React.Component {
 		}
 	}
 
+	/**
+	* Function called when form is submitted
+	*/
 	handleSubmit(input,searchByOpt) {
+
+		//Prevent default behavior of forms - don't reload page or reset state
 		event.preventDefault()
+
 		if(!input) {
-			return window.alert("Please enter something to search by")
+			return window.alert("Please enter something in the box to search for")
 		} 
 
 		this.setState({loading: true, error: ""})
+
 		getCountries(input,searchByOpt)
 		.then((data) => {
-			console.log("Data: ", data);
 			if(data.ok === false) this.setState({countries: [], regions: {},loading: false, errorCode: data.status, errorMessage: data.statusText})
 			else {
 				this.setState({countries: data.countries, regions: data.regions, loading: false, errorCode: data.countries.length ? "" : 404})
@@ -41,6 +47,10 @@ export default class App extends React.Component {
 			})
 	}
 
+	/**
+	* Render the content displayed below the input form
+	* This could be the loading image, countries, or an error, based on the current state of the app
+	*/
 	renderContent() {
 		if(this.state.loading) return (
 				<div id="loading">

@@ -47,6 +47,7 @@ body{
 
 #loading {
 	margin-top: 40px;
+	font-size:24pt;
 }
 
 #loadingImg {
@@ -122,6 +123,10 @@ body{
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.error {
+	font-size: 24pt;
 }
 
 @keyframes fadeIn {

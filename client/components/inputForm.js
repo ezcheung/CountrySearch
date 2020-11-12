@@ -16,15 +16,25 @@ export default class InputForm extends React.Component {
 		}
 	}
 
+	/*
+	* Event handler for when a user enters into the text box
+	*/
 	handleInputChange(event) {
 		this.setState({input: event.target.value});
 	}
 
+	/*
+	* Event handler for when the radio buttons are selected
+	*/
 	handleSearchByChange(event) {
 		this.setState({optSearchBy: event.target.value})
 	}
 	
-	searchByBtn(name) {
+	/**
+	* Gets the JSX to render a radio button of a given value
+	* @param name the value of the radio button
+	*/
+	renderRadio(name) {
 		return (
 			<label className="radio">
 				<input 
@@ -47,9 +57,9 @@ export default class InputForm extends React.Component {
 						<input id="input" type="text" value={this.state.input} onChange={this.handleInputChange.bind(this)}/>
 					</label>
 					<div id="searchByBtns">
-						{this.searchByBtn("Name")}
-						{this.searchByBtn("Full Name")}
-						{this.searchByBtn("Code")}
+						{this.renderRadio("Name")}
+						{this.renderRadio("Full Name")}
+						{this.renderRadio("Code")}
 					</div>
 					<input className="button" id="btnSub" type="submit" value={"Search by " + this.state.optSearchBy}/>
 				</form>
